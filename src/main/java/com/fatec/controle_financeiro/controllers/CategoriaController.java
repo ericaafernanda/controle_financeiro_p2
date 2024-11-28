@@ -24,16 +24,16 @@ public class CategoriaController {
     public ResponseEntity<?> createCategoria(@RequestBody Categoria categoria) {
         try {
             if(categoria.getDescricao().isEmpty()){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Descrição não pode ser nula");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("A descrição não pode ser nula!");
             }else{
                 if(categoria.isAtivo() == null){
                     categoria.setAtivo(true);
                 }
                 categoriaRepository.save(categoria);
-                return ResponseEntity.status(HttpStatus.CREATED).body("Produto criado com sucesso!");
+                return ResponseEntity.status(HttpStatus.CREATED).body("O produto foi criado com sucesso!");
             }
         } catch (DataIntegrityViolationException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Descrição já cadastrada, use uma descrição diferente.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Descrição já cadastrada. Use uma descrição diferente.");
         }
         }
 }

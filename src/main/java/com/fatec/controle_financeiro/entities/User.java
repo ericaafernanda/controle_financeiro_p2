@@ -14,7 +14,6 @@ public class User {
         @Min(value = 0, message = "A idade não pode ser negativa.")
         private int age;
 
-        // Construtor padrão
         public User() {
         }
 
@@ -24,7 +23,6 @@ public class User {
             this.age = age;
         }
 
-        // Getters e Setters
         public int getId() { return id; }
 
         public void setId(int id) { this.id = id; }

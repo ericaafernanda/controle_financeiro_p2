@@ -7,6 +7,12 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,13 +20,6 @@ import com.fatec.controle_financeiro.domain.contaspagar.ContasPagarRepository;
 import com.fatec.controle_financeiro.domain.fornecedor.FornecedorRepository;
 import com.fatec.controle_financeiro.entities.ContasPagar;
 import com.fatec.controle_financeiro.entities.Fornecedor;
-
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
 
 
 
@@ -33,8 +32,8 @@ public class ContasPagarController {
     Fornecedor fornecedor = new Fornecedor();
 
     private String msgErroFornecedor = "Fornecedor não encontrado";
-    private String msgErroValor = "Valor da conta não pode ser menor que 0";
-    private String msgErroData = "A data de emissão não pode ser posterior a de vencimento!";
+    private String msgErroValor = "Valor da conta não pode ser menor que 0!";
+    private String msgErroData = "A data de emissão não pode ser posterior data de vencimento!";
 
     @Autowired
     private ContasPagarRepository contasPagarRepository;
@@ -47,20 +46,15 @@ public class ContasPagarController {
         if(contaspagar.getVencimento().isAfter(contaspagar.getEmissao())){
             if((contaspagar.getValor().compareTo(BigDecimal.ZERO) > 0)){
                 if(fornecedorRepository.findById(contaspagar.getFornecedor().getId()).isPresent() && contaspagar.getFornecedor() != null ) {
-                    //id e buscar no fornecedor se id existe
-                    //nao existe -> mostrar msg
                         ContasPagar contaspagarCreated = contasPagarRepository.save(contaspagar);
                         return new ResponseEntity<>(contaspagarCreated, HttpStatus.CREATED);
-                }else{
-                    //Fornecedor nulo
+                }else{                    
                     return new ResponseEntity<>(msgErroFornecedor, HttpStatus.EXPECTATION_FAILED);
                 }
             }else{
-                //Valor menor que 0
                 return new ResponseEntity<>(msgErroValor, HttpStatus.EXPECTATION_FAILED);
             }
         }else{
-            //Data emissao inválida
             return new ResponseEntity<>(msgErroData, HttpStatus.EXPECTATION_FAILED);
         }
     }
@@ -82,8 +76,7 @@ public class ContasPagarController {
     }
     
     @PutMapping("{id}")
-    public ResponseEntity<?> updateContaPagar(@PathVariable long id, @RequestBody ContasPagar entityContasPagar) {
-        //TODO: process PUT request
+    public ResponseEntity<?> updateContaPagar(@PathVariable long id, @RequestBody ContasPagar entityContasPagar) {       
         Optional<ContasPagar> contaAtual = contasPagarRepository.findById(id);
         if(contaAtual.isPresent()){
             if(entityContasPagar.getVencimento().isAfter(entityContasPagar.getEmissao())){
@@ -92,15 +85,12 @@ public class ContasPagarController {
                         ContasPagar contaspagarCreated = contasPagarRepository.save(entityContasPagar);
                         return new ResponseEntity<>(contaspagarCreated, HttpStatus.OK);
                     }else{
-                        //Fornecedor nulo
                         return new ResponseEntity<>(msgErroFornecedor, HttpStatus.EXPECTATION_FAILED);
                     }
                 }else{
-                    //Valor menor que 0
                     return new ResponseEntity<>(msgErroValor, HttpStatus.EXPECTATION_FAILED);
                 }
             }else{
-                //Data emissao inválida
                 return new ResponseEntity<>(msgErroData, HttpStatus.EXPECTATION_FAILED);
             }
             

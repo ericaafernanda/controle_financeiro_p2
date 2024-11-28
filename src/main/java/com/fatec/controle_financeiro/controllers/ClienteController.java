@@ -29,19 +29,9 @@ public class ClienteController {
 
     @Autowired
     private ClienteRepository clienteRepository;
- 
-/*     private List<Cliente> clientes = new ArrayList<>();
-    private int proximoId = 1; */
 
     @PostMapping()
     public ResponseEntity<Cliente> createCliente(@RequestBody Cliente cliente){
-
-        /*
-        cliente.setId(proximoId++);
-        clientes.add(cliente);
-        */
-        
-        //return new ResponseEntity<>(cliente, HttpStatus.CREATED);
 
         Cliente clienteCreated = clienteRepository.save(cliente);
         return new ResponseEntity<>(clienteCreated, HttpStatus.CREATED);
@@ -56,12 +46,7 @@ public class ClienteController {
 
     @GetMapping("{id}")
     public ResponseEntity<Cliente> getByIdCliente(@PathVariable int id){
-        /*for(Cliente user : clientes){
-            if(user.getId()==id){
-                return new ResponseEntity<>(user, HttpStatus.OK);
-            }
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);*/
+       
         Optional<Cliente> cliente = clienteRepository.findById(id);
         if (cliente.isPresent()){
             return new ResponseEntity<>(cliente.get(), HttpStatus.OK);
@@ -72,15 +57,7 @@ public class ClienteController {
 
     @PutMapping("{id}")
     public ResponseEntity<Cliente> updateCliente(@PathVariable int id, @RequestBody Cliente entity){
-            /* for(Cliente user : clientes){
-            if(user.getId() == id){
-                user.setId(entity.getId());
-                user.setName(entity.getName());
-                return new ResponseEntity<>(user, HttpStatus.OK);
-            }
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND); */
-
+          
         Optional<Cliente> clienteAtual = clienteRepository.findById(id);
         if (clienteAtual.isPresent()){
             entity.setId(id);
@@ -93,14 +70,7 @@ public class ClienteController {
 
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteCliente(@PathVariable int id){
-        /* for(Cliente user : clientes){
-            if(user.getId() == id){
-                clientes.remove(user);
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);   */
-
+        
         Optional<Cliente> clienteAtual = clienteRepository.findById(id);
         if(clienteAtual.isPresent()){
             clienteRepository.deleteById(id);
@@ -110,7 +80,4 @@ public class ClienteController {
         }
 
     }
-
-    //CREATE, READ, UPDATE E DELETE
-
 }

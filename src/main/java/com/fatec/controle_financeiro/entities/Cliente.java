@@ -18,7 +18,6 @@ public class Cliente {
     @Column(nullable = false, length = 60)
     private String name;
 
-    // Construtor padrão
     public Cliente() {
 
     }
@@ -30,8 +29,6 @@ public class Cliente {
         this.name = name;
 
     }
-
-    // Getters e Setters
 
     public int getId() { return id; }
 

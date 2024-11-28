@@ -27,16 +27,8 @@ public class FornecedorController {
     @Autowired
     private FornecedorRepository fornecedorRepository;
     
-/*     private List<Fornecedor> fornecedores = new ArrayList<>();
-    private int proximoId = 1; */
-
     @PostMapping
     public ResponseEntity<Fornecedor> createFornecedor(@RequestBody Fornecedor fornecedor){
-
-        /* fornecedor.setId(proximoId++);
-        fornecedores.add(fornecedor);
-
-        return new ResponseEntity<>(fornecedor, HttpStatus.CREATED); */
 
         Fornecedor fornecedorCreated = fornecedorRepository.save(fornecedor);
         return new ResponseEntity<>(fornecedorCreated, HttpStatus.CREATED);
@@ -44,19 +36,13 @@ public class FornecedorController {
 
     @GetMapping
     public ResponseEntity<List<Fornecedor>> getAllFornecedor(){
-           /*  return new ResponseEntity<>(fornecedores, HttpStatus.OK); */
            List<Fornecedor> fornecedores =fornecedorRepository.findAll();
            return new ResponseEntity<>(fornecedores, HttpStatus.OK);
     }
 
     @GetMapping("{id}")
     public ResponseEntity<Fornecedor> getByIdFornecedor(@PathVariable int id){
-        /* for(Fornecedor countFornecedor : fornecedores){
-            if(countFornecedor.getId() == id){
-                return new ResponseEntity<>(countFornecedor, HttpStatus.OK);
-            }
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND); */
+        
         Optional<Fornecedor> fornecedor = fornecedorRepository.findById(id);
         if(fornecedor.isPresent()){
             return new ResponseEntity<>(fornecedor.get(), HttpStatus.OK);
@@ -67,16 +53,7 @@ public class FornecedorController {
 
     @PutMapping("{id}")
     public ResponseEntity<Fornecedor> updateFornecedor(@PathVariable int id, @RequestBody Fornecedor entityFornecedor){
-        /* for(Fornecedor fornecedor : fornecedores){
-            if(entityFornecedor.getId() == id){
-                fornecedor.setId(entityFornecedor.getId());
-                fornecedor.setNome(entityFornecedor.getNome());
-                return new ResponseEntity<>(fornecedor, HttpStatus.OK);
-            }
-        }
-
-        return new ResponseEntity<>(entityFornecedor, HttpStatus.OK); */
-
+        
         Optional<Fornecedor> fornecedorAtual = fornecedorRepository.findById(id);
         if(fornecedorAtual.isPresent()){
             entityFornecedor.setId(id);
@@ -89,14 +66,7 @@ public class FornecedorController {
 
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteFornecedor(@PathVariable int id){
-        /* for(Fornecedor fornecedor : fornecedores){
-            if(fornecedor.getId() == id){
-                fornecedores.remove(fornecedor);
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-        }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT); */
-    
+        
         Optional<Fornecedor> fornecedorAtual = fornecedorRepository.findById(id);
         if(fornecedorAtual.isPresent()){
             fornecedorRepository.deleteById(id);
@@ -105,6 +75,4 @@ public class FornecedorController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
-    //CREATE, READ, UPDATE E DELETE
 }
